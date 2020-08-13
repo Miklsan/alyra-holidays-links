@@ -27,13 +27,14 @@ class ListLinks {
   }
   remove(el) {
     const i = this.list.findIndex((item) => item === el) // <- ce code trouve index de l'élément récherché
-    this.list.splice(index, 1) // <- ce code enleve l'élément avec index i de list
+    this.list.splice(i, 1) // <- ce code enleve l'élément avec index i de list
+    console.log(this.list)
     // @todo : appeller la méthode refresh
     this.refresh()
   }
   refresh() {
-    addToLocalStorage()
-    render()
+    this.render()
+    this.addToLocalStorage()
     // @todo: appele la méthode addToLocalStorage
     // @todo: appele la méthode render
   }
@@ -48,13 +49,12 @@ class ListLinks {
     const ulEl = this.addUl()
     this.container.innerHTML = ""
     // @todo : attache ulEl à la fin de container
-    const listeVacances = document.getElementById("container")
-    listeVacances.append(ulEl)
+    this.container.append(ulEl)
   }
 
   addUl() {
-    const ulEl = document.createElement("ul")
-    ulEl.classList.add("row", "list-unstyled", "mt-4")
+    const ulEl = this.createUlElement()
+    console.log(this.list)
     // @todo : ajouter des classes row list-unstyled mt-4
     for (let el of this.list) {
       const li = this.addLi(el)
@@ -66,10 +66,14 @@ class ListLinks {
   }
 
   addLi(el) {
-    const liEl = document.createElement("li")
+    const liEl = this.createLiElement()
     // @todo : ajouter des classes à liEl border shadow-sm mb-3 p-2
-    liEl.classList.add("border", "shadow-sm", "mb-3", "p-2")
-    //liEl.innerHTML = this.addTitle(el)
+
+    liEl.append(this.addTitle(el))
+    liEl.append(this.addDescription(el))
+    liEl.append(this.addLink(el))
+    liEl.append(this.addButton(el))
+
     // @todo : mettre en place le reste de son contentu en utilisant les méthodes
     //addDescription(el)
     //liEl.innerHTML = this.addDescription(el)
@@ -79,29 +83,69 @@ class ListLinks {
     //liEl.innerHTML = this.addButton(el)
     return liEl
   }
+  createUlElement() {
+    const ulEl = document.createElement("ul")
+    ulEl.classList.add("row", "list-unstyled", "mt-4")
+    return ulEl
+  }
+
+  createLiElement() {
+    const liEl = document.createElement("li")
+    liEl.classList.add("border", "shadow-sm", "mb-3", "p-2")
+    return liEl
+  }
+
+  createTitleElement() {
+    const el = document.createElement('h3')
+    el.classList.add('h6', 'mb-0')
+    return el
+  }
 
   addTitle(el) {
     // @todo : retourner le markup pour le titre (h3.h6.mb-0), <h3 class="h6 mb-0">Le titre</h3>
-    const title = document.createElement("h3")
-    title.classList.add("h6", "mb-0")
-    title.innerHTML = defaultList.title.value
+    const title = this.createTitleElement()
+    title.textContent = el.title
     return title
+  }
+  createDescriptionElement() {
+    const el = document.createElement("p")
+    return el
   }
 
   addDescription(el) {
     // @todo : retourner le markup pour la description, <p>Voici la description</p>
+    const descritption = this.createDescriptionElement()
+    descritption.textContent = el.description
+    return descritption
   }
-
+  createLinkElement() {
+    const el = document.createElement("a")
+    el.classList.add("btn", "btn-sm", "btn-outline-warning", "mr-2")
+    return el
+  }
   addLink(el) {
     /* @todo : retourner le markup pour le lien vers le ressource a.btn.btn-sm.btn-ouline-warning.mr-2 
     avec le texte visitez le lien */
+    const a = this.createLinkElement()
+    a.textContent = "visiter le lien"
+    return a
   }
-
+  createButtonElement() {
+    const el = document.createElement("button")
+    el.type = 'button'
+    el.classList.add("btn", "btn-warning", "btn-sm")
+    return el
+  }
   addButton(el) {
-    const buttonEl = document.createElement(button)
+    const buttonEl = this.createButtonElement()
+    buttonEl.textContent = " supprimer le lien"
+    buttonEl.addEventListener("click", () => {
+      this.remove(el)
+    })
     // @todo : ajouter des classes btn btn-warning btn-sm
     // @todo : mettre le texte "Supprimer le lien"
     // @todo : ajouter un eventListener qui écoute pour 'click' qui déclanchera la méthode remove
     // @todo : retourner buttonEl
+    return buttonEl
   }
 }
