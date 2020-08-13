@@ -11,18 +11,17 @@ class ListLinks {
   pushEl(el) {
     /* @todo : remplacer array vide [] dans const urls = [], par l'array qui contient tous les urls
     trouvés dans this.list */
-    const urls = []
-    for (let el of defaultList) {
-      if ('url' in el) {
-        urls = urls.concat(el.url)
-      }
-    }
+    console.log(this.list)
+    const urls = this.list.map((el) => el.url)
+    console.log(urls)
     if (!urls.includes(el.url)) {
       // si el.url n'est pas dans la liste des urls
       // je l'ajoute
       this.list.push(el)
       // et j'appelle la méthode refresh
       this.refresh()
+    } else {
+      alert("Ce lien existe déjà")
     }
   }
   remove(el) {
