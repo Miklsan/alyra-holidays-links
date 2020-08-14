@@ -1,9 +1,43 @@
 "use strict"
 const container = document.getElementById("container")
 const form = document.getElementById("form")
-
+const tri = document.getElementById("buttonTri")
 const listLinks = new ListLinks(container, defaultList)
 listLinks.init()
+
+//Créer button tri par catégories
+const filtreCategories = document.createElement("div")
+filtreCategories.id = "filtreCategories"
+filtreCategories.classList.add("col", "mb-3")
+filtreCategories.innerHTML = `<div class ="input-group">
+<label for = "filtreCategory" class = "input-group-text bg-warning text-white">Catégories</label>
+<select id = "filtreCategory" name ="filtreCategory" class =" form-select text-dark">
+<option value = "toutes les catégories" class = "bg-warning text-dark" selected> Toutes les catégories</option>
+<option value="js">JavaScript</option>
+            <option value="portfolio">Portfolio</option>
+            <option value="inspiration">Inspiration</option>
+            <option value="misc">Misc</option>
+</select>
+</div>`
+
+container.prepend(filtreCategories)
+
+//tri par catégories
+this.list = JSON.parse(localStorage.getItem("listLinks")) || defaultList
+const categorys = this.list.map((el) => el.category)
+console.log(categorys)
+const selectCategory = document.getElementById("filtreCategory")
+const option = document.querySelector("option")
+
+
+
+
+
+//tri alphabétique
+const listFilterLinks = listLinks.list;
+console.log("list", listFilterLinks);
+
+
 
 // quand l'événement "submit" pour le formulaire est déclenché
 form.addEventListener("submit", (event) => {
@@ -23,6 +57,7 @@ form.addEventListener("submit", (event) => {
     description: form.elements.description.value.trim(), // @todo : et la valeur de description depuis le formulaire,
     category: form.elements.category.value, // @todo : et la valeur de category depuis le formulaire,
   })
+
   // la ligne ci-dessous fait un reset du formulaire (les champs redeviennent vides)
   form.reset()
 })

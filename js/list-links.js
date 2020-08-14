@@ -8,6 +8,7 @@ class ListLinks {
     this.render()
   }
 
+
   pushEl(el) {
     /* @todo : remplacer array vide [] dans const urls = [], par l'array qui contient tous les urls
     trouvés dans this.list */
@@ -50,6 +51,37 @@ class ListLinks {
     // @todo : attache ulEl à la fin de container
     this.container.append(ulEl)
   }
+
+  renderTri() {
+    const selectEl = document.getElementById("triAZ");
+    const option = document.querySelector("option");
+    selectEl.addEventListener("change", () => {
+      if (option.value == "A-Z") {
+        this.list.sort(function (a, b) {
+          if (a.title < b.title) {
+            return -1;
+          }
+          if (a.title > b.title) {
+            return 1;
+          }
+          return 0;
+        });
+        this.render();
+      } else if (option.value == "Z-A") {
+        this.list.sort(function (b, a) {
+          if (b.title > a.title) {
+            return -1;
+          }
+          if (b.title < a.title) {
+            return 0;
+          }
+          return 0;
+        });
+        this.render();
+      }
+    })
+  }
+
 
   addUl() {
     const ulEl = this.createUlElement()
